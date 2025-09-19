@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumverse – Where Students Meet Futures</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/en/1/1f/SRM_Institute_of_Science_and_Technology_Logo.png">
+</head>
+<body>
+    <div id="app">
+        <!-- Login View -->
+        <section id="view-login" class="view view-centered hidden">
+            <div class="login-card glass">
+                <img class="logo" alt="Login Image" src="data:image/jpeg;base64,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" />
+                <h1 class="title">ALUMVERSE </h1>
+                <p class="subtitle">Where Students Meet Futures</p>
+
+                <div class="role-switch">
+                    <button data-role="student" class="chip chip-active">Student</button>
+                    <button data-role="alumni" class="chip">Alumni</button>
+                    <button data-role="committee" class="chip">Committee</button>
+                    <button data-role="faculty" class="chip">Faculty</button>
+                </div>
+
+                <form id="login-form" class="login-form">
+                    <div class="input-group">
+                        <label>Institute Email</label>
+                        <input type="email" id="email" placeholder="name@srmist.edu.in" required />
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="password" placeholder="••••••••" required />
+                    </div>
+                    <button class="btn btn-primary" type="submit">Sign In</button>
+                    <p class="hint">Tip: This is a demo. Any credentials will work.</p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Main App View -->
+        <section id="view-app" class="view hidden">
+            <header class="topbar">
+                <div class="brand">
+                    <img class="brand-logo" alt="SRM IST" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWkE_8Z3V0_QtkDFCJeDRQHve4GxlW8g3-Ww&s" />
+                    <div class="brand-text">
+                        <div class="brand-title">Alumverse</div>
+                        <div class="brand-sub">Where Students Meet Futures</div>
+                    </div>
+                </div>
+                <div class="topbar-actions">
+                    <span id="user-role" class="badge"></span>
+                    <button id="logout-btn" class="btn btn-ghost">Logout</button>
+                </div>
+            </header>
+
+                <nav class="tabs">
+                    <button data-tab="directory" class="tab tab-active">Directory</button>
+                    <button data-tab="profiles" class="tab">Profiles</button>
+                    <button data-tab="meetings" class="tab">Meetings</button>
+                    <button data-tab="collab" class="tab">Collab</button>
+                    <button data-tab="events" class="tab committee-only hidden">Events</button>
+                    <button data-tab="feed" class="tab alumni-only hidden">Feed</button>
+                    <button data-tab="monitoring" class="tab faculty-only hidden">Monitoring</button>
+                    <button data-tab="analytics" class="tab">Analytics</button>
+                </nav>
+
+            <main class="content">
+                <section id="tab-directory" class="tabview">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Smart Alumni Directory</h2>
+                            <p>Search alumni by skills, company, batch, position, location, or gender.</p>
+                        </div>
+                        <div class="filters grid">
+                            <input id="dir-search" class="input" placeholder="Search by skill, company, position..." />
+                            <select id="dir-batch" class="input">
+                                <option value="">Batch</option>
+                            </select>
+                            <select id="dir-location" class="input">
+                                <option value="">Location</option>
+                            </select>
+                            <select id="dir-gender" class="input">
+                                <option value="">Gender</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div id="dir-results" class="grid cards-grid"></div>
+                    </div>
+                </section>
+
+                <section id="tab-profiles" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Student Profiles</h2>
+                            <p>Mini-resumes with CGPA, projects, internships, certifications, achievements.</p>
+                        </div>
+                        
+                        <!-- Student Profile Editor (only visible to students) -->
+                        <div id="profile-editor" class="student-only hidden">
+                            <h3>Edit Your Profile</h3>
+                            <form id="profile-edit-form" class="grid form-grid">
+                                <div class="input-group">
+                                    <label>CGPA</label>
+                                    <input type="number" id="edit-cgpa" step="0.01" min="0" max="10" class="input" placeholder="8.5" />
+                                </div>
+                                <div class="input-group">
+                                    <label>Branch</label>
+                                    <input type="text" id="edit-branch" class="input" placeholder="Computer Science" />
+                                </div>
+                                <div class="input-group">
+                                    <label>Batch</label>
+                                    <input type="number" id="edit-batch" class="input" placeholder="2024" />
+                                </div>
+                                <div class="input-group">
+                                    <label>Projects (comma-separated)</label>
+                                    <textarea id="edit-projects" class="input" placeholder="Web App, Mobile App, AI Project"></textarea>
+                                </div>
+                                <div class="input-group">
+                                    <label>Internships (comma-separated)</label>
+                                    <textarea id="edit-internships" class="input" placeholder="Google, Microsoft, Startup"></textarea>
+                                </div>
+                                <div class="input-group">
+                                    <label>Certifications (comma-separated)</label>
+                                    <textarea id="edit-certifications" class="input" placeholder="AWS, Google Cloud, Azure"></textarea>
+                                </div>
+                                <div class="input-group">
+                                    <label>Achievements (comma-separated)</label>
+                                    <textarea id="edit-achievements" class="input" placeholder="Hackathon Winner, Research Paper, Patent"></textarea>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Update Profile</button>
+                            </form>
+                        </div>
+                        
+                        <div id="profiles-list" class="grid cards-grid"></div>
+                    </div>
+                </section>
+
+                <section id="tab-meetings" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Meeting Requests</h2>
+                            <p>View and manage meeting requests.</p>
+                        </div>
+                        
+                        <!-- Meeting Request Form (Students Only) -->
+                        <div id="meeting-form-section" class="student-only hidden">
+                            <h3>Request a Meeting</h3>
+                            <form id="meeting-form" class="grid form-grid">
+                                <select id="meeting-alumni" class="input" required></select>
+                                <input id="meeting-topic" class="input" placeholder="Topic" required />
+                                <input id="meeting-purpose" class="input" placeholder="Purpose" required />
+                                <input id="meeting-time" type="datetime-local" class="input" required />
+                                <button class="btn btn-primary" type="submit">Request Meeting</button>
+                            </form>
+                        </div>
+                        
+                        <h3>Your Requests</h3>
+                        <div id="meeting-requests" class="list"></div>
+                        <h3 class="alumni-only hidden">Alumni Inbox</h3>
+                        <div id="alumni-inbox" class="list alumni-only hidden"></div>
+                    </div>
+                </section>
+
+                <section id="tab-collab" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Startup & Research Collaboration</h2>
+                            <p>Pitch ideas, apply for research, and find collaborators.</p>
+                        </div>
+                        
+                        <!-- Pitch Form (Students Only) -->
+                        <div id="pitch-form-section" class="student-only hidden">
+                            <h3>Create a Pitch</h3>
+                            <form id="pitch-form" class="grid form-grid">
+                                <input id="pitch-title" class="input" placeholder="Pitch title" required />
+                                <textarea id="pitch-desc" class="input" placeholder="Describe your startup or research idea" required></textarea>
+                                <select id="pitch-type" class="input">
+                                    <option>Startup</option>
+                                    <option>Research</option>
+                                </select>
+                                <button class="btn btn-primary" type="submit">Publish</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Alumni Collaboration Requests -->
+                        <div id="collab-requests-section" class="alumni-only hidden">
+                            <h3>Student Collaboration Requests</h3>
+                            <div id="collab-requests" class="list"></div>
+                        </div>
+                        
+                        <h3>Collaboration Feed</h3>
+                        <div id="collab-feed" class="grid cards-grid"></div>
+                    </div>
+                </section>
+
+                <section id="tab-collab" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Startup & Research Collaboration Hub</h2>
+                            <p>Students pitch ideas, alumni collaborate, faculty oversee.</p>
+                        </div>
+                        
+                        <!-- Student Pitch Form (only visible to students) -->
+                        <div id="pitch-form-section" class="student-only hidden">
+                            <h3>Create Pitch</h3>
+                            <form id="pitch-form" class="grid form-grid">
+                                <input id="pitch-title" class="input" placeholder="Project/Startup title" required />
+                                <textarea id="pitch-desc" class="input" placeholder="Description, goals, tech stack..." required></textarea>
+                                <select id="pitch-type" class="input" required>
+                                    <option value="">Type</option>
+                                    <option>Startup</option>
+                                    <option>Research</option>
+                                    <option>Open Source</option>
+                                    <option>Social Impact</option>
+                                </select>
+                                <button class="btn btn-primary" type="submit">Publish</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Alumni Collaboration Requests (only visible to alumni) -->
+                        <div id="collab-requests-section" class="alumni-only hidden">
+                            <h3>Student Collaboration Requests</h3>
+                            <div id="collab-requests" class="list"></div>
+                        </div>
+                        
+                        <h3>Collaboration Feed</h3>
+                        <div id="collab-feed" class="grid cards-grid"></div>
+                    </div>
+                </section>
+
+                <section id="tab-events" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Committee Dashboard</h2>
+                            <p>Manage events, alumni engagement, funding, and institutional oversight.</p>
+                        </div>
+                        
+                        <!-- Committee Navigation Tabs -->
+                        <div class="committee-tabs" style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <button class="btn btn-primary committee-tab-btn active" data-committee-tab="events">Event Management</button>
+                            <button class="btn btn-ghost committee-tab-btn" data-committee-tab="alumni">Alumni Engagement</button>
+                            <button class="btn btn-ghost committee-tab-btn" data-committee-tab="funding">Funding & Scholarships</button>
+                            <button class="btn btn-ghost committee-tab-btn" data-committee-tab="analytics">Dashboard & Analytics</button>
+                            <button class="btn btn-ghost committee-tab-btn" data-committee-tab="communication">Communication Hub</button>
+                            <button class="btn btn-ghost committee-tab-btn" data-committee-tab="approvals">Approvals & Oversight</button>
+                            <button class="btn btn-ghost committee-tab-btn" data-committee-tab="members">Committee Members</button>
+                        </div>
+
+                        <!-- Event Management Section -->
+                        <div id="committee-events" class="committee-section">
+                            <h3>Event Management</h3>
+                            <form id="event-form" class="grid form-grid">
+                                <input id="event-title" class="input" placeholder="Event title" required />
+                                <input id="event-date" type="date" class="input" required />
+                                <input id="event-time" type="time" class="input" required />
+                                <select id="event-type" class="input" required>
+                                    <option value="">Select Event Type</option>
+                                    <option value="seminar">Seminar</option>
+                                    <option value="mentorship">Mentorship Program</option>
+                                    <option value="fest">Tech Fest</option>
+                                    <option value="hackathon">Hackathon</option>
+                                    <option value="workshop">Workshop</option>
+                                </select>
+                                <textarea id="event-description" class="input" placeholder="Event description" required></textarea>
+                                <input id="event-location" class="input" placeholder="Location/Venue" required />
+                                <input id="event-capacity" type="number" class="input" placeholder="Max Capacity" required />
+                                <button class="btn btn-primary" type="submit">Create Event</button>
+                            </form>
+                            
+                            <h4>Event Calendar</h4>
+                            <div class="calendar-view" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin: 16px 0;">
+                                <div class="calendar-header" style="text-align: center; font-weight: bold; padding: 8px;">Mon</div>
+                                <div class="calendar-header" style="text-align: center; font-weight: bold; padding: 8px;">Tue</div>
+                                <div class="calendar-header" style="text-align: center; font-weight: bold; padding: 8px;">Wed</div>
+                                <div class="calendar-header" style="text-align: center; font-weight: bold; padding: 8px;">Thu</div>
+                                <div class="calendar-header" style="text-align: center; font-weight: bold; padding: 8px;">Fri</div>
+                                <div class="calendar-header" style="text-align: center; font-weight: bold; padding: 8px;">Sat</div>
+                                <div class="calendar-header" style="text-align: center; font-weight: bold; padding: 8px;">Sun</div>
+                                <!-- Calendar days will be populated by JavaScript -->
+                            </div>
+                            
+                            <h4>Upcoming Events</h4>
+                            <div id="events-list" class="list"></div>
+                        </div>
+
+                        <!-- Alumni Engagement Section -->
+                        <div id="committee-alumni" class="committee-section hidden">
+                            <h3>Alumni Engagement</h3>
+                            <div class="grid form-grid">
+                                <button class="btn btn-primary" id="invite-alumni-btn">Invite Alumni for Talk</button>
+                                <button class="btn btn-primary" id="invite-mentor-btn">Invite for Mentorship</button>
+                                <button class="btn btn-primary" id="invite-judge-btn">Invite for Hackathon Judging</button>
+                            </div>
+                            <h4>Alumni Participation Log</h4>
+                            <div id="alumni-participation" class="list"></div>
+                        </div>
+
+                        <!-- Funding & Scholarships Section -->
+                        <div id="committee-funding" class="committee-section hidden">
+                            <h3>Funding & Scholarships</h3>
+                            <form id="scholarship-form" class="grid form-grid">
+                                <input id="scholarship-title" class="input" placeholder="Scholarship/Sponsorship Title" required />
+                                <input id="scholarship-amount" type="number" class="input" placeholder="Amount" required />
+                                <textarea id="scholarship-description" class="input" placeholder="Description & Requirements" required></textarea>
+                                <input id="scholarship-deadline" type="date" class="input" required />
+                                <button class="btn btn-primary" type="submit">Post Scholarship</button>
+                            </form>
+                            <h4>Active Scholarships</h4>
+                            <div id="scholarships-list" class="list"></div>
+                            <h4>Applications Tracking</h4>
+                            <div id="applications-list" class="list"></div>
+                        </div>
+
+                        <!-- Dashboard & Analytics Section -->
+                        <div id="committee-analytics" class="committee-section hidden">
+                            <h3>Dashboard & Analytics</h3>
+                            <div class="analytics-grid">
+                                <div class="kpi">
+                                    <div class="value" id="total-events">0</div>
+                                    <div class="label">Total Events</div>
+                                </div>
+                                <div class="kpi">
+                                    <div class="value" id="alumni-participation">0</div>
+                                    <div class="label">Alumni Participation</div>
+                                </div>
+                                <div class="kpi">
+                                    <div class="value" id="funding-raised">₹0</div>
+                                    <div class="label">Funding Raised</div>
+                                </div>
+                                <div class="kpi">
+                                    <div class="value" id="student-registrations">0</div>
+                                    <div class="label">Student Registrations</div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="export-reports-btn">Export Reports</button>
+                        </div>
+
+                        <!-- Communication Hub Section -->
+                        <div id="committee-communication" class="committee-section hidden">
+                            <h3>Communication Hub</h3>
+                            <form id="announcement-form" class="grid form-grid">
+                                <input id="announcement-title" class="input" placeholder="Announcement Title" required />
+                                <textarea id="announcement-content" class="input" placeholder="Announcement Content" required></textarea>
+                                <select id="announcement-target" class="input" required>
+                                    <option value="">Select Target Audience</option>
+                                    <option value="all-students">All Students</option>
+                                    <option value="all-alumni">All Alumni</option>
+                                    <option value="specific-batch">Specific Batch</option>
+                                    <option value="specific-department">Specific Department</option>
+                                </select>
+                                <button class="btn btn-primary" type="submit">Send Announcement</button>
+                            </form>
+                            <h4>Recent Announcements</h4>
+                            <div id="announcements-list" class="list"></div>
+                        </div>
+
+                        <!-- Approvals & Oversight Section -->
+                        <div id="committee-approvals" class="committee-section hidden">
+                            <h3>Approvals & Oversight</h3>
+                            <h4>Pending Approvals</h4>
+                            <div id="pending-approvals" class="list"></div>
+                        </div>
+
+                        <!-- Committee Members Section -->
+                        <div id="committee-members" class="committee-section hidden">
+                            <h3>Committee Members</h3>
+                            <h4>Main Committee Members</h4>
+                            <div id="main-members" class="list"></div>
+                            <h4>Student Committee Members</h4>
+                            <div id="student-members" class="list"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="tab-feed" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Alumni Feed</h2>
+                            <p>Share updates, insights, and opportunities with the community.</p>
+                        </div>
+                        <form id="feed-post-form" class="grid form-grid">
+                            <input id="feed-title" class="input" placeholder="Post title" required />
+                            <textarea id="feed-content" class="input" placeholder="Share your thoughts, opportunities, or insights..." required></textarea>
+                            <select id="feed-category" class="input">
+                                <option>General</option>
+                                <option>Job Opportunity</option>
+                                <option>Career Advice</option>
+                                <option>Industry Insights</option>
+                                <option>Mentorship</option>
+                            </select>
+                            <button class="btn btn-primary" type="submit">Post to Feed</button>
+                        </form>
+                        <div id="feed-posts" class="grid cards-grid"></div>
+                    </div>
+                </section>
+
+                <section id="tab-monitoring" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Student Monitoring Dashboard</h2>
+                            <p>Track student progress, engagement, and achievements across all activities.</p>
+                        </div>
+                        <div class="filters grid">
+                            <select id="monitor-batch" class="input">
+                                <option value="">All Batches</option>
+                            </select>
+                            <select id="monitor-department" class="input">
+                                <option value="">All Departments</option>
+                            </select>
+                            <input id="monitor-search" class="input" placeholder="Search students..." />
+                        </div>
+                        <div id="student-monitoring" class="grid cards-grid"></div>
+                    </div>
+                </section>
+
+                <section id="tab-analytics" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Analytics Dashboard</h2>
+                            <p>Engagement, levels, participation, and impact (mock data).</p>
+                        </div>
+                        <div id="analytics" class="analytics-grid"></div>
+                    </div>
+                </section>
+            </main>
+        </section>
+    </div>
+
+    <script src="mock-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
+
