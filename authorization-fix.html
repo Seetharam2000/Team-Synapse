@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google OAuth Authorization Fix</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #22c55e 0%, #6b7280 50%, #0ea5e9 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .error-box {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .error-box h3 {
+            color: #fca5a5;
+            margin-top: 0;
+        }
+        .error-box p {
+            color: #fecaca;
+            margin: 8px 0;
+        }
+        .step {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #22c55e;
+        }
+        .step h3 {
+            color: #22c55e;
+            margin-top: 0;
+        }
+        .step p {
+            color: #e5e7eb;
+            margin: 8px 0;
+        }
+        .code {
+            background: rgba(0,0,0,0.3);
+            color: #22c55e;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        .button {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .button:hover {
+            background: #16a34a;
+        }
+        .button.danger {
+            background: #ef4444;
+        }
+        .button.danger:hover {
+            background: #dc2626;
+        }
+        .warning {
+            background: rgba(251, 191, 36, 0.2);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning h4 {
+            color: #fbbf24;
+            margin-top: 0;
+        }
+        .warning p {
+            color: #fde68a;
+            margin: 5px 0;
+        }
+        .success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .success h4 {
+            color: #22c55e;
+            margin-top: 0;
+        }
+        .success p {
+            color: #bbf7d0;
+            margin: 5px 0;
+        }
+        .checklist {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .checklist h4 {
+            color: #e5e7eb;
+            margin-top: 0;
+        }
+        .checklist ul {
+            color: #d1d5db;
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        .checklist li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 Google OAuth Authorization Fix</h1>
+        
+        <div class="error-box">
+            <h3>❌ Current Error:</h3>
+            <p><strong>"Access blocked: Authorization Error"</strong></p>
+            <p>Google is blocking your app because it's not properly configured.</p>
+        </div>
+
+        <div class="checklist">
+            <h4>📋 Quick Checklist - Check These:</h4>
+            <ul>
+                <li>✅ OAuth consent screen configured</li>
+                <li>✅ Your email added to test users</li>
+                <li>✅ Authorized origins: <code>http://localhost:3000</code></li>
+                <li>✅ Authorized redirect URIs: <code>http://localhost:3000</code></li>
+                <li>✅ Google+ API enabled</li>
+                <li>✅ Publishing status: Testing</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 1: Open Google Cloud Console</h3>
+            <p>Click the button below to open your Google Cloud Console:</p>
+            <a href="https://console.cloud.google.com/" target="_blank" class="button">
+                🚀 Open Google Cloud Console
+            </a>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Configure OAuth Consent Screen</h3>
+            <p>1. Go to "APIs & Services" → "OAuth consent screen"</p>
+            <p>2. If not configured, click "Create"</p>
+            <p>3. Fill in:</p>
+            <div class="code">
+                App name: Alumverse SRM<br>
+                User support email: seetharam.hariharan@gmail.com<br>
+                Developer contact: seetharam.hariharan@gmail.com
+            </div>
+            <p>4. Add scopes: <strong>email</strong>, <strong>profile</strong>, <strong>openid</strong></p>
+            <p>5. Add test users: <strong>seetharam.hariharan@gmail.com</strong></p>
+            <p>6. Set Publishing status to <strong>"Testing"</strong></p>
+            <a href="https://console.cloud.google.com/apis/credentials/consent" target="_blank" class="button">
+                🔧 Open OAuth Consent Screen
+            </a>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Update OAuth 2.0 Client ID</h3>
+            <p>1. Go to "APIs & Services" → "Credentials"</p>
+            <p>2. Find your Client ID: <code>916167801744-fl2gc6cpeu9tsreh2n3tha6bqbc0uij7</code></p>
+            <p>3. Click the edit icon (pencil)</p>
+            <p>4. Add to "Authorized JavaScript origins":</p>
+            <div class="code">http://localhost:3000</div>
+            <p>5. Add to "Authorized redirect URIs":</p>
+            <div class="code">http://localhost:3000</div>
+            <p>6. Click "Save"</p>
+            <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="button">
+                🔧 Open Credentials
+            </a>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Enable Required APIs</h3>
+            <p>1. Go to "APIs & Services" → "Library"</p>
+            <p>2. Search for "Google+ API" or "Google Identity"</p>
+            <p>3. Click "Enable"</p>
+            <a href="https://console.cloud.google.com/apis/library" target="_blank" class="button">
+                📚 Open API Library
+            </a>
+        </div>
+
+        <div class="warning">
+            <h4>⚠️ Important Notes:</h4>
+            <p>• <strong>Wait 2-3 minutes</strong> after making changes</p>
+            <p>• <strong>No trailing slash</strong> - Use <code>http://localhost:3000</code></p>
+            <p>• <strong>Exact match</strong> - Must be exactly <code>http://localhost:3000</code></p>
+            <p>• <strong>Case sensitive</strong> - Use lowercase <code>http</code></p>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: Test Your Fix</h3>
+            <p>1. Wait 2-3 minutes for changes to take effect</p>
+            <p>2. Refresh your browser at http://localhost:3000</p>
+            <p>3. Try Google Sign-In again</p>
+            <p>4. Should work now! 🎉</p>
+        </div>
+
+        <div class="success">
+            <h4>✅ What Should Happen:</h4>
+            <p>• Google Sign-In button appears</p>
+            <p>• Clicking opens Google account selection</p>
+            <p>• You can choose your Google account</p>
+            <p>• Grant permissions and get logged in</p>
+            <p>• See your real name and profile picture</p>
+        </div>
+
+        <div class="warning">
+            <h4>🚨 If Still Blocked:</h4>
+            <p><strong>Option A:</strong> When you see "This app isn't verified" → Click "Advanced" → "Go to Alumverse SRM (unsafe)"</p>
+            <p><strong>Option B:</strong> Make sure your email is in "Test users"</p>
+            <p><strong>Option C:</strong> Set Publishing status to "Testing"</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="http://localhost:3000" target="_blank" class="button">
+                🚀 Test Your App
+            </a>
+            <a href="https://console.cloud.google.com/apis/credentials" target="_blank" class="button">
+                🔧 Open Credentials
+            </a>
+            <a href="https://console.cloud.google.com/apis/credentials/consent" target="_blank" class="button">
+                🔧 Open OAuth Consent
+            </a>
+        </div>
+    </div>
+</body>
+</html>

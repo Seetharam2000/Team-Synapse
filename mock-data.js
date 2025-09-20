@@ -18,7 +18,7 @@ const MOCK = {
     { id: 'a15', name: 'Suresh Kumar', gender: 'Male', batch: 2017, company: 'Zoom', position: 'Video Engineer', location: 'San Jose', skills: ['WebRTC', 'C++', 'Real-time Systems'] },
   ],
   students: [
-    { id: 's1', name: 'Neha Verma', email: 'neha@srmist.edu.in', branch: 'CSE', batch: 2024, cgpa: 9.1, projects: ['FoodLens', 'ChatBot'], internships: ['Zoho'], certifications: ['AWS CCP'], achievements: ['SIH Finalist'] },
+    { id: 's1', name: 'Neha Verma', email: 'neha@srmist.edu.in', branch: 'CSE', batch: 2024, cgpa: 9.1, projects: ['FoodLens', 'ChatBot'], internships: ['Zoho'], certifications: ['AWS CCP'], achievements: ['SIH Finalist'], skills: ['JavaScript', 'Python', 'React'], interests: ['AI', 'Web Development'], linkedin: 'https://linkedin.com/in/nehaverma', github: 'https://github.com/nehaverma' },
     { id: 's2', name: 'Arjun Kumar', email: 'arjun@srmist.edu.in', branch: 'ECE', batch: 2024, cgpa: 8.7, projects: ['SmartGrid IoT'], internships: ['Qualcomm'], certifications: ['CCNA'], achievements: ['Hackathon Winner'] },
     { id: 's3', name: 'Ishita Rao', email: 'ishita@srmist.edu.in', branch: 'CSE', batch: 2024, cgpa: 9.4, projects: ['VisionAid'], internships: ['TCS'], certifications: ['GCP ACE'], achievements: ['Dean List'] },
     { id: 's4', name: 'Rahul Singh', email: 'rahul@srmist.edu.in', branch: 'IT', batch: 2025, cgpa: 8.9, projects: ['Blockchain App', 'AI Chatbot'], internships: ['Infosys'], certifications: ['Azure Fundamentals'], achievements: ['Tech Fest Winner'] },

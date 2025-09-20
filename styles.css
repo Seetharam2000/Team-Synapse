@@ -48,6 +48,11 @@ body:has(#view-login:not(.hidden)) {
   background-attachment: fixed;
 }
 
+/* Hidden class for view switching */
+.hidden {
+  display: none !important;
+}
+
 .glass {
   background: var(--glass);
   backdrop-filter: blur(12px) saturate(140%);
@@ -95,6 +100,479 @@ body:has(#view-login:not(.hidden)) {
 
 .hint { font-size: 12px; color: #e5e7eb; opacity: 0.9; }
 
+/* Google Sign-In Styles */
+.google-signin-section {
+  margin-top: 16px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.3);
+}
+
+.divider span {
+  padding: 0 16px;
+  color: #e5e7eb;
+  font-size: 14px;
+  background: transparent;
+}
+
+/* Real Google Sign-In Button Styling */
+.g_id_signin {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.g_id_signin > div {
+  width: 100% !important;
+  border-radius: 12px !important;
+  height: 48px !important;
+}
+
+/* Custom styling for Google button */
+.g_id_signin iframe {
+  border-radius: 12px !important;
+}
+
+/* Override Google's default styling */
+.g_id_signin [role="button"] {
+  border-radius: 12px !important;
+  height: 48px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Spinner animation for Google Sign-In */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Beta Version - NFC Login Styles - Updated v2.0 */
+.beta-section {
+  margin-top: 20px;
+}
+
+.beta-card {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.beta-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.beta-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.beta-badge {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  display: inline-block;
+  margin-bottom: 12px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.beta-header h3 {
+  color: #000000;
+  margin: 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.beta-header p {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* NFC Simulator */
+.nfc-simulator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.nfc-tap-area {
+  width: 120px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid #000000;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nfc-tap-area:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.tap-text {
+  color: #e5e7eb;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Beta Features */
+.beta-features {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #d1d5db;
+  font-size: 12px;
+}
+
+.feature-icon {
+  font-size: 16px;
+}
+
+/* Beta Button */
+.btn-beta {
+  width: 100%;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-beta:hover {
+  background: linear-gradient(45deg, #2563eb, #7c3aed);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.btn-beta:active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  font-size: 16px;
+}
+
+/* NFC Animation States */
+.nfc-tap-area.scanning {
+  animation: scan 1s ease-in-out;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+@keyframes scan {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.9) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  padding: 24px 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h3 {
+  color: #e5e7eb;
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.modal-header p {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 14px;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  padding: 16px 24px 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Role Selection */
+.role-selection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.role-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+.role-icon {
+  font-size: 24px;
+}
+
+.role-name {
+  color: #e5e7eb;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.role-desc {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+/* Verification Steps */
+.verification-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.step-item.completed {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.step-item.active {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  animation: pulse-glow 2s infinite;
+}
+
+.step-item.pending {
+  background: rgba(107, 114, 128, 0.1);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+}
+
+.step-icon {
+  font-size: 24px;
+  min-width: 32px;
+  text-align: center;
+}
+
+.step-content h4 {
+  color: #e5e7eb;
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.step-content p {
+  color: #9ca3af;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Biometric Sensor */
+.biometric-sensor {
+  width: 60px;
+  height: 40px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  border-radius: 8px;
+  border: 2px solid #34d399;
+  position: relative;
+  margin: 8px auto;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.biometric-sensor:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(52, 211, 153, 0.5);
+}
+
+.sensor-light {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+.sensor-text {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  color: #d1fae5;
+  font-weight: 500;
+}
+
+/* PIN Input */
+.pin-input {
+  margin-top: 8px;
+}
+
+.pin-field {
+  width: 100px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #e5e7eb;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 4px;
+}
+
+.pin-field:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.pin-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #fbbf24;
+  text-align: center;
+  font-weight: 500;
+}
+
 .topbar {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   padding: 12px 18px; position: sticky; top: 0; z-index: 5; background: rgba(2,6,23,0.55);
@@ -136,6 +614,104 @@ body:has(#view-login:not(.hidden)) {
 .level-card h3 { margin: 0 0 8px; }
 .level-badge { font-weight: 800; background: #fff; color: #0b1020; padding: 4px 10px; border-radius: 999px; }
 
+/* Student Quick Actions */
+.student-quick-actions {
+  margin: 20px 0;
+  padding: 20px;
+  background: rgba(34, 197, 94, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.student-quick-actions h3 {
+  margin: 0 0 16px;
+  color: #22c55e;
+  font-size: 18px;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.quick-action-btn:hover {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.4);
+  transform: translateY(-2px);
+}
+
+.action-icon {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 197, 94, 0.2);
+  border-radius: 50%;
+}
+
+.action-text {
+  font-weight: 600;
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.reward-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.reward-icon {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 197, 94, 0.2);
+  border-radius: 50%;
+}
+
+.reward-content h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reward-content p {
+  margin: 0;
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
 .analytics-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .kpi { background: rgba(2,6,23,0.5); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); }
 .kpi .value { font-size: 28px; font-weight: 800; }
@@ -146,11 +722,15 @@ body:has(#view-login:not(.hidden)) {
 .faculty-only { display: none !important; }
 .committee-only { display: none !important; }
 .student-only { display: none !important; }
+.alumni-hidden { display: none !important; }
+.committee-hidden { display: none !important; }
 
 .role-alumni .alumni-only { display: block !important; }
 .role-faculty .faculty-only { display: block !important; }
 .role-committee .committee-only { display: block !important; }
 .role-student .student-only { display: block !important; }
+.role-alumni .alumni-hidden { display: none !important; }
+.role-committee .committee-hidden { display: none !important; }
 
 /* Feed post styling */
 .feed-post-card h4 { margin: 0 0 8px; }

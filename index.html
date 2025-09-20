@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google Sign-In API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/en/1/1f/SRM_Institute_of_Science_and_Technology_Logo.png">
 </head>
 <body>
@@ -36,8 +39,68 @@
                         <input type="password" id="password" placeholder="••••••••" required />
                     </div>
                     <button class="btn btn-primary" type="submit">Sign In</button>
-                    <p class="hint">Tip: This is a demo. Any credentials will work.</p>
+                    <p class="hint">Tip: Students can use any email. Alumni: shreya@gmail.com or lakshmi@gmail.com. Committee: QWIK@gmail.com. Faculty: logesh@srmist.edu.in</p>
                 </form>
+                
+                <!-- Google Sign-In Button -->
+                <div class="google-signin-section">
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+                    <div id="g_id_onload"
+                         data-client_id="916167801744-fl2gc6cpeu9tsreh2n3tha6bqbc0uij7.apps.googleusercontent.com"
+                         data-callback="handleCredentialResponse"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-size="large"
+                         data-theme="outline"
+                         data-text="sign_in_with"
+                         data-shape="rectangular"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                
+                <!-- Beta Version - NFC Login -->
+                <div class="beta-section">
+                    <div class="divider">
+                        <span>or</span>
+                    </div>
+                    <div class="beta-card">
+                        <div class="beta-header">
+                            <div class="beta-badge">BETA</div>
+                            <h3>NFC ID Card Login</h3>
+                            <p>Tap your SRM ID card for instant login</p>
+                        </div>
+                        
+                        <div class="nfc-simulator">
+                            <div class="nfc-tap-area" id="nfc-tap-area">
+                                <div class="tap-text">Tap Here</div>
+                            </div>
+                        </div>
+                        
+                        <div class="beta-features">
+                            <div class="feature-item">
+                                <span class="feature-icon">🔒</span>
+                                <span>2-Step Verification</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">⚡</span>
+                                <span>Instant Login</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">🎯</span>
+                                <span>Role Detection</span>
+                            </div>
+                        </div>
+                        
+                        <button id="nfc-login-btn" class="btn btn-beta">
+                            <span class="btn-icon">📱</span>
+                            Simulate NFC Tap
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -58,10 +121,11 @@
             </header>
 
                 <nav class="tabs">
-                    <button data-tab="directory" class="tab tab-active">Directory</button>
+                    <button data-tab="directory" class="tab tab-active alumni-hidden">Directory</button>
                     <button data-tab="profiles" class="tab">Profiles</button>
-                    <button data-tab="meetings" class="tab">Meetings</button>
-                    <button data-tab="collab" class="tab">Collab</button>
+                    <button data-tab="meetings" class="tab alumni-hidden">Meetings</button>
+                    <button data-tab="collab" class="tab committee-hidden">Collab</button>
+                    <button data-tab="levels" class="tab student-only hidden">Levels</button>
                     <button data-tab="events" class="tab committee-only hidden">Events</button>
                     <button data-tab="feed" class="tab alumni-only hidden">Feed</button>
                     <button data-tab="monitoring" class="tab faculty-only hidden">Monitoring</button>
@@ -74,6 +138,29 @@
                         <div class="card-header">
                             <h2>Smart Alumni Directory</h2>
                             <p>Search alumni by skills, company, batch, position, location, or gender.</p>
+                        </div>
+                        
+                        <!-- Student Quick Actions -->
+                        <div class="student-quick-actions student-only hidden">
+                            <h3>Quick Actions</h3>
+                            <div class="quick-actions-grid">
+                                <button class="quick-action-btn" onclick="requestMentorship()">
+                                    <span class="action-icon">🎯</span>
+                                    <span class="action-text">Request Mentorship</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="findInternships()">
+                                    <span class="action-icon">💼</span>
+                                    <span class="action-text">Find Internships</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="connectAlumni()">
+                                    <span class="action-icon">🤝</span>
+                                    <span class="action-text">Connect with Alumni</span>
+                                </button>
+                                <button class="quick-action-btn" onclick="exploreCareers()">
+                                    <span class="action-icon">🚀</span>
+                                    <span class="action-text">Explore Careers</span>
+                                </button>
+                            </div>
                         </div>
                         <div class="filters grid">
                             <input id="dir-search" class="input" placeholder="Search by skill, company, position..." />
@@ -133,6 +220,22 @@
                                     <label>Achievements (comma-separated)</label>
                                     <textarea id="edit-achievements" class="input" placeholder="Hackathon Winner, Research Paper, Patent"></textarea>
                                 </div>
+                                <div class="input-group">
+                                    <label>Skills (comma-separated)</label>
+                                    <textarea id="edit-skills" class="input" placeholder="JavaScript, Python, React, Machine Learning"></textarea>
+                                </div>
+                                <div class="input-group">
+                                    <label>Interests (comma-separated)</label>
+                                    <textarea id="edit-interests" class="input" placeholder="AI, Web Development, Data Science, Entrepreneurship"></textarea>
+                                </div>
+                                <div class="input-group">
+                                    <label>LinkedIn Profile</label>
+                                    <input type="url" id="edit-linkedin" class="input" placeholder="https://linkedin.com/in/yourprofile" />
+                                </div>
+                                <div class="input-group">
+                                    <label>GitHub Profile</label>
+                                    <input type="url" id="edit-github" class="input" placeholder="https://github.com/yourusername" />
+                                </div>
                                 <button class="btn btn-primary" type="submit">Update Profile</button>
                             </form>
                         </div>
@@ -170,38 +273,6 @@
                 <section id="tab-collab" class="tabview hidden">
                     <div class="card">
                         <div class="card-header">
-                            <h2>Startup & Research Collaboration</h2>
-                            <p>Pitch ideas, apply for research, and find collaborators.</p>
-                        </div>
-                        
-                        <!-- Pitch Form (Students Only) -->
-                        <div id="pitch-form-section" class="student-only hidden">
-                            <h3>Create a Pitch</h3>
-                            <form id="pitch-form" class="grid form-grid">
-                                <input id="pitch-title" class="input" placeholder="Pitch title" required />
-                                <textarea id="pitch-desc" class="input" placeholder="Describe your startup or research idea" required></textarea>
-                                <select id="pitch-type" class="input">
-                                    <option>Startup</option>
-                                    <option>Research</option>
-                                </select>
-                                <button class="btn btn-primary" type="submit">Publish</button>
-                            </form>
-                        </div>
-                        
-                        <!-- Alumni Collaboration Requests -->
-                        <div id="collab-requests-section" class="alumni-only hidden">
-                            <h3>Student Collaboration Requests</h3>
-                            <div id="collab-requests" class="list"></div>
-                        </div>
-                        
-                        <h3>Collaboration Feed</h3>
-                        <div id="collab-feed" class="grid cards-grid"></div>
-                    </div>
-                </section>
-
-                <section id="tab-collab" class="tabview hidden">
-                    <div class="card">
-                        <div class="card-header">
                             <h2>Startup & Research Collaboration Hub</h2>
                             <p>Students pitch ideas, alumni collaborate, faculty oversee.</p>
                         </div>
@@ -231,6 +302,101 @@
                         
                         <h3>Collaboration Feed</h3>
                         <div id="collab-feed" class="grid cards-grid"></div>
+                    </div>
+                </section>
+
+                <section id="tab-levels" class="tabview hidden">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Student Level System</h2>
+                            <p>Track your progress and unlock new opportunities as you grow.</p>
+                        </div>
+                        
+                        <div class="levels">
+                            <div class="level-card">
+                                <h3>Level 1: Novice</h3>
+                                <div class="level-badge">L1</div>
+                                <p>Complete your profile and connect with 3 alumni</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                <div class="meta">Completed</div>
+                            </div>
+                            
+                            <div class="level-card">
+                                <h3>Level 2: Explorer</h3>
+                                <div class="level-badge">L2</div>
+                                <p>Attend 2 meetings and publish 1 collaboration pitch</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%"></div>
+                                </div>
+                                <div class="meta">75% Complete</div>
+                            </div>
+                            
+                            <div class="level-card">
+                                <h3>Level 3: Collaborator</h3>
+                                <div class="level-badge">L3</div>
+                                <p>Complete 3 projects and mentor 1 junior student</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 50%"></div>
+                                </div>
+                                <div class="meta">50% Complete</div>
+                            </div>
+                            
+                            <div class="level-card">
+                                <h3>Level 4: Leader</h3>
+                                <div class="level-badge">L4</div>
+                                <p>Lead a startup project and organize 1 event</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 25%"></div>
+                                </div>
+                                <div class="meta">25% Complete</div>
+                            </div>
+                            
+                            <div class="level-card">
+                                <h3>Level 5: Mentor</h3>
+                                <div class="level-badge">L5</div>
+                                <p>Become an alumni mentor and contribute to research</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <div class="meta">Not Started</div>
+                            </div>
+                        </div>
+                        
+                        <div class="level-rewards">
+                            <h3>Level Rewards</h3>
+                            <div class="rewards-grid">
+                                <div class="reward-item">
+                                    <span class="reward-icon">🎯</span>
+                                    <div class="reward-content">
+                                        <h4>Priority Meeting Access</h4>
+                                        <p>Get priority scheduling with top alumni</p>
+                                    </div>
+                                </div>
+                                <div class="reward-item">
+                                    <span class="reward-icon">💼</span>
+                                    <div class="reward-content">
+                                        <h4>Exclusive Internships</h4>
+                                        <p>Access to premium internship opportunities</p>
+                                    </div>
+                                </div>
+                                <div class="reward-item">
+                                    <span class="reward-icon">🚀</span>
+                                    <div class="reward-content">
+                                        <h4>Startup Funding</h4>
+                                        <p>Eligibility for startup funding programs</p>
+                                    </div>
+                                </div>
+                                <div class="reward-item">
+                                    <span class="reward-icon">🏆</span>
+                                    <div class="reward-content">
+                                        <h4>Recognition Badges</h4>
+                                        <p>Earn recognition badges for achievements</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 

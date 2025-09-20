@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sign-In Setup Helper</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #22c55e 0%, #6b7280 50%, #0ea5e9 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .step {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #22c55e;
+        }
+        .step h3 {
+            color: #22c55e;
+            margin-top: 0;
+        }
+        .step p {
+            color: #e5e7eb;
+            margin: 8px 0;
+        }
+        .code {
+            background: rgba(0,0,0,0.3);
+            color: #22c55e;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        .button {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.2s;
+        }
+        .button:hover {
+            background: #16a34a;
+        }
+        .warning {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .warning h4 {
+            color: #fca5a5;
+            margin-top: 0;
+        }
+        .warning p {
+            color: #fecaca;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Google Sign-In Setup Helper</h1>
+        
+        <div class="warning">
+            <h4>⚠️ 400 Error Fix</h4>
+            <p>You're getting a 400 error because Google Sign-In needs a real Client ID.</p>
+            <p>Follow these steps to fix it:</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 1: Go to Google Cloud Console</h3>
+            <p>Click the button below to open Google Cloud Console:</p>
+            <button class="button" onclick="window.open('https://console.cloud.google.com/', '_blank')">
+                🚀 Open Google Cloud Console
+            </button>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Create Project</h3>
+            <p>1. Click "Select a project" → "New Project"</p>
+            <p>2. Name: <strong>Alumverse-SRM</strong></p>
+            <p>3. Click "Create"</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Enable Google Sign-In API</h3>
+            <p>1. Go to "APIs & Services" → "Library"</p>
+            <p>2. Search for "Google+ API" or "Google Identity"</p>
+            <p>3. Click "Enable"</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Configure OAuth Consent Screen</h3>
+            <p>1. Go to "APIs & Services" → "OAuth consent screen"</p>
+            <p>2. Choose "External" → "Create"</p>
+            <p>3. Fill in:</p>
+            <div class="code">
+                App name: Alumverse SRM<br>
+                User support email: [Your email]<br>
+                Developer contact: [Your email]
+            </div>
+            <p>4. Click "Save and Continue"</p>
+            <p>5. Add scopes: <strong>email</strong>, <strong>profile</strong>, <strong>openid</strong></p>
+            <p>6. Add test users: <strong>[Your email]</strong></p>
+            <p>7. Click "Save and Continue"</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: Create OAuth 2.0 Client ID</h3>
+            <p>1. Go to "APIs & Services" → "Credentials"</p>
+            <p>2. Click "Create Credentials" → "OAuth 2.0 Client ID"</p>
+            <p>3. Application type: <strong>Web application</strong></p>
+            <p>4. Name: <strong>Alumverse Web Client</strong></p>
+            <p>5. Authorized JavaScript origins:</p>
+            <div class="code">http://localhost:3000</div>
+            <p>6. Authorized redirect URIs:</p>
+            <div class="code">http://localhost:3000</div>
+            <p>7. Click "Create"</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 6: Copy Your Client ID</h3>
+            <p>Copy the Client ID (looks like this):</p>
+            <div class="code">123456789-abcdefg.apps.googleusercontent.com</div>
+            <p><strong>Keep this safe!</strong></p>
+        </div>
+
+        <div class="step">
+            <h3>Step 7: Update Your Code</h3>
+            <p>Replace <code>YOUR_CLIENT_ID_HERE</code> with your actual Client ID in:</p>
+            <p>1. <strong>index.html</strong> (line 51)</p>
+            <p>2. <strong>app.js</strong> (line 148)</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 8: Test It!</h3>
+            <p>1. Refresh your browser at http://localhost:3000</p>
+            <p>2. Select a role</p>
+            <p>3. Click "Sign in with Google"</p>
+            <p>4. Should work now! 🎉</p>
+        </div>
+
+        <div class="warning">
+            <h4>🚨 Common Issues:</h4>
+            <p><strong>"This app isn't verified"</strong> → Click "Advanced" → "Go to Alumverse SRM (unsafe)"</p>
+            <p><strong>"redirect_uri_mismatch"</strong> → Check that http://localhost:3000 is in authorized origins</p>
+            <p><strong>"Invalid client_id"</strong> → Double-check your Client ID is copied correctly</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="button" onclick="window.open('http://localhost:3000', '_blank')">
+                🚀 Test Your App
+            </button>
+        </div>
+    </div>
+</body>
+</html>

@@ -53,27 +53,499 @@
     profiles: document.getElementById('tab-profiles'),
     meetings: document.getElementById('tab-meetings'),
     collab: document.getElementById('tab-collab'),
+    levels: document.getElementById('tab-levels'),
     events: document.getElementById('tab-events'),
     feed: document.getElementById('tab-feed'),
     monitoring: document.getElementById('tab-monitoring'),
     analytics: document.getElementById('tab-analytics'),
   };
 
+  // Real Google Sign-In functionality
+  let selectedRole = 'student'; // This will be set by role selection
+  
+  // Real Google Sign-In callback function
+  function handleCredentialResponse(response) {
+    try {
+      // Decode the JWT token to get user information
+      const responsePayload = decodeJwtResponse(response.credential);
+      
+      console.log('Google Sign-In Response:', responsePayload);
+      
+      // Extract user information from Google
+      const googleUser = {
+        email: responsePayload.email,
+        name: responsePayload.name,
+        picture: responsePayload.picture,
+        googleId: responsePayload.sub,
+        emailVerified: responsePayload.email_verified,
+        role: selectedRole // Use the selected role from the form
+      };
+      
+      // Validate email for the selected role
+      if (!validateEmailForRole(googleUser.email, selectedRole)) {
+        let errorMessage = '';
+        switch(selectedRole) {
+          case 'alumni':
+            errorMessage = 'Only shreya@gmail.com and lakshmi@gmail.com are allowed for Alumni';
+            break;
+          case 'committee':
+            errorMessage = 'Only QWIK@gmail.com is allowed for Committee';
+            break;
+          case 'faculty':
+            errorMessage = 'Only logesh@srmist.edu.in is allowed for Faculty';
+            break;
+          default:
+            errorMessage = 'Invalid email for this role';
+        }
+        toast(errorMessage, 'error');
+        return;
+      }
+      
+      // Set user data in state
+      state.user = {
+        role: selectedRole,
+        email: googleUser.email,
+        name: googleUser.name,
+        picture: googleUser.picture,
+        googleId: googleUser.googleId,
+        emailVerified: googleUser.emailVerified,
+        level: selectedRole === 'student' ? 3 : 5,
+        follows: [],
+        connections: [],
+        authMethod: 'google',
+        loginTime: new Date().toISOString()
+      };
+      
+      // Save state and render app
+      saveState(state);
+      renderApp();
+      
+      // Show success message
+      toast(`Welcome ${googleUser.name}! Successfully signed in with Google`);
+      
+      // Optional: Send user data to your server for validation/storage
+      // sendUserDataToServer(googleUser);
+      
+    } catch (error) {
+      console.error('Google Sign-In Error:', error);
+      toast('Google Sign-In failed. Please try again.', 'error');
+    }
+  }
+  
+  // Helper function to decode JWT token
+  function decodeJwtResponse(token) {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error('JWT Decode Error:', error);
+      throw new Error('Failed to decode Google token');
+    }
+  }
+  
+  // Initialize Google Sign-In when page loads
+  function initializeGoogleSignIn() {
+    if (typeof google !== 'undefined' && google.accounts) {
+      // Check if we have a real client ID
+      const clientId = '916167801744-fl2gc6cpeu9tsreh2n3tha6bqbc0uij7.apps.googleusercontent.com';
+      
+      if (clientId === 'YOUR_CLIENT_ID_HERE') {
+        console.warn('⚠️ Google Sign-In not configured. Please set up your Client ID.');
+        console.log('📖 Follow the guide in FIX_400_ERROR.md to set up Google Sign-In');
+        
+        // Hide the Google Sign-In button until configured
+        const googleSigninSection = document.querySelector('.google-signin-section');
+        if (googleSigninSection) {
+          googleSigninSection.innerHTML = `
+            <div class="divider">
+              <span>or</span>
+            </div>
+            <div style="text-align: center; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.3);">
+              <p style="color: #e5e7eb; margin: 0 0 8px 0; font-size: 14px;">🔧 Google Sign-In Setup Required</p>
+              <p style="color: #9ca3af; margin: 0; font-size: 12px;">Follow FIX_400_ERROR.md to configure</p>
+            </div>
+          `;
+        }
+        return;
+      }
+      
+      google.accounts.id.initialize({
+        client_id: clientId,
+        callback: handleCredentialResponse,
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+      
+      console.log('✅ Google Sign-In initialized successfully');
+    } else {
+      console.error('❌ Google Sign-In API not loaded');
+    }
+  }
+  
+  // Initialize when DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // Wait a bit for Google API to load
+    setTimeout(initializeGoogleSignIn, 1000);
+  });
+
+  // NFC Login Simulation
+  const nfcLoginBtn = document.getElementById('nfc-login-btn');
+  const nfcTapArea = document.getElementById('nfc-tap-area');
+
+  // Mock NFC ID cards data
+  const nfcCards = {
+    'student': {
+      id: 'SRM2024001',
+      name: 'Alex Kumar',
+      email: 'alex.kumar@srmist.edu.in',
+      role: 'student',
+      batch: '2024',
+      branch: 'CSE',
+      pin: '1234'
+    },
+    'alumni': {
+      id: 'SRM2018001',
+      name: 'Priya Sharma',
+      email: 'priya.sharma@gmail.com',
+      role: 'alumni',
+      batch: '2018',
+      branch: 'ECE',
+      pin: '5678'
+    },
+    'committee': {
+      id: 'SRM2020001',
+      name: 'Rajesh Kumar',
+      email: 'rajesh.kumar@srmist.edu.in',
+      role: 'committee',
+      batch: '2020',
+      branch: 'ME',
+      pin: '9999'
+    },
+    'faculty': {
+      id: 'SRM2021001',
+      name: 'Dr. Sarah Johnson',
+      email: 'sarah.johnson@srmist.edu.in',
+      role: 'faculty',
+      department: 'Computer Science',
+      pin: '2024'
+    }
+  };
+
+  // NFC Login function
+  function simulateNFCLogin() {
+    console.log('NFC Login started - Tap area found:', !!nfcTapArea);
+    
+    // Show scanning animation
+    nfcTapArea.classList.add('scanning');
+    
+    // Disable button during scanning
+    nfcLoginBtn.disabled = true;
+    nfcLoginBtn.innerHTML = `
+      <span class="btn-icon">📡</span>
+      Scanning...
+    `;
+
+    // Simulate scanning delay
+    setTimeout(() => {
+      // Remove scanning animation
+      nfcTapArea.classList.remove('scanning');
+      
+      // Show role selection for NFC
+      showNFCRoleSelection();
+    }, 2000);
+  }
+
+  // Show role selection for NFC login
+  function showNFCRoleSelection() {
+    const roleModal = document.createElement('div');
+    roleModal.className = 'modal-overlay';
+    roleModal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>🔍 NFC Card Detected</h3>
+          <p>Select your role to continue</p>
+        </div>
+        <div class="modal-body">
+          <div class="role-selection">
+            <button class="role-btn" data-role="student">
+              <span class="role-icon">🎓</span>
+              <span class="role-name">Student</span>
+              <span class="role-desc">SRM Student</span>
+            </button>
+            <button class="role-btn" data-role="alumni">
+              <span class="role-icon">👨‍🎓</span>
+              <span class="role-name">Alumni</span>
+              <span class="role-desc">SRM Graduate</span>
+            </button>
+            <button class="role-btn" data-role="committee">
+              <span class="role-icon">👥</span>
+              <span class="role-name">Committee</span>
+              <span class="role-desc">Event Committee</span>
+            </button>
+            <button class="role-btn" data-role="faculty">
+              <span class="role-icon">👨‍🏫</span>
+              <span class="role-name">Faculty</span>
+              <span class="role-desc">SRM Faculty</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(roleModal);
+    
+    // Add event listeners to role buttons
+    roleModal.querySelectorAll('.role-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const selectedRole = btn.dataset.role;
+        roleModal.remove();
+        startTwoStepVerification(selectedRole);
+      });
+    });
+  }
+
+  // 2-Step Verification Process
+  function startTwoStepVerification(role) {
+    const cardData = nfcCards[role];
+    
+    const verificationModal = document.createElement('div');
+    verificationModal.className = 'modal-overlay';
+    verificationModal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>🔐 2-Step Verification</h3>
+          <p>Complete verification to access your account</p>
+        </div>
+        <div class="modal-body">
+          <div class="verification-steps">
+            <div class="step-item completed">
+              <div class="step-icon">✅</div>
+              <div class="step-content">
+                <h4>NFC Card Verified</h4>
+                <p>Card ID: ${cardData.id}</p>
+                <p>Name: ${cardData.name}</p>
+              </div>
+            </div>
+            
+            <div class="step-item active">
+              <div class="step-icon">🔑</div>
+              <div class="step-content">
+                <h4>Biometric Verification</h4>
+                <p>Place your finger on the sensor</p>
+                <div class="biometric-sensor">
+                  <div class="sensor-light"></div>
+                  <div class="sensor-text">Touch Here</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="step-item pending">
+              <div class="step-icon">⏳</div>
+              <div class="step-content">
+                <h4>PIN Verification</h4>
+                <p>Enter your 4-digit PIN: <strong>${cardData.pin}</strong></p>
+                <div class="pin-input">
+                  <input type="password" maxlength="4" placeholder="••••" class="pin-field" id="pin-input">
+                </div>
+                <div class="pin-hint">Demo PIN: ${cardData.pin}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" id="complete-login-btn" onclick="completeVerification('${role}')">Complete Login</button>
+          <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(verificationModal);
+    
+    // Simulate biometric verification
+    setTimeout(() => {
+      const biometricStep = verificationModal.querySelector('.step-item.active');
+      biometricStep.classList.remove('active');
+      biometricStep.classList.add('completed');
+      biometricStep.querySelector('.step-icon').textContent = '✅';
+      
+      const pinStep = verificationModal.querySelector('.step-item.pending');
+      pinStep.classList.remove('pending');
+      pinStep.classList.add('active');
+      
+      // Add PIN validation
+      const pinInput = document.getElementById('pin-input');
+      const completeBtn = document.getElementById('complete-login-btn');
+      
+      if (pinInput && completeBtn) {
+        pinInput.addEventListener('input', function() {
+          const enteredPin = this.value;
+          const isValidPin = enteredPin === cardData.pin;
+          
+          if (isValidPin) {
+            this.style.borderColor = '#10b981';
+            this.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+            completeBtn.disabled = false;
+            completeBtn.style.opacity = '1';
+            completeBtn.style.cursor = 'pointer';
+          } else {
+            this.style.borderColor = '#ef4444';
+            this.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+            completeBtn.disabled = true;
+            completeBtn.style.opacity = '0.5';
+            completeBtn.style.cursor = 'not-allowed';
+          }
+        });
+        
+        // Initially disable the button
+        completeBtn.disabled = true;
+        completeBtn.style.opacity = '0.5';
+        completeBtn.style.cursor = 'not-allowed';
+      }
+    }, 3000);
+  }
+
+  // Complete verification and login
+  function completeVerification(role) {
+    console.log('Complete verification called for role:', role);
+    const cardData = nfcCards[role];
+    console.log('Card data:', cardData);
+    
+    // Set user data
+    state.user = {
+      role: role,
+      email: cardData.email,
+      name: cardData.name,
+      level: role === 'student' ? 3 : 5,
+      follows: [],
+      connections: [],
+      authMethod: 'nfc',
+      nfcId: cardData.id
+    };
+    
+    console.log('User state set:', state.user);
+    
+    // Save state and render app
+    saveState(state);
+    console.log('State saved, calling renderApp...');
+    renderApp();
+    console.log('renderApp completed');
+    
+    // Show success message
+    toast(`Welcome ${cardData.name}! NFC login successful`, 'success');
+    
+    // Remove any open modals
+    const modals = document.querySelectorAll('.modal-overlay');
+    console.log('Found modals to remove:', modals.length);
+    modals.forEach(modal => {
+      console.log('Removing modal:', modal);
+      modal.remove();
+    });
+    
+    // Reset NFC button
+    nfcLoginBtn.disabled = false;
+    nfcLoginBtn.innerHTML = `
+      <span class="btn-icon">📱</span>
+      Simulate NFC Tap
+    `;
+    
+    console.log('NFC login process completed');
+  }
+
+  // Add event listener for NFC login button
+  nfcLoginBtn.addEventListener('click', simulateNFCLogin);
+
   // Login flow
-  let selectedRole = 'student';
   roleChips.forEach(ch => ch.addEventListener('click', () => {
     roleChips.forEach(x => x.classList.remove('chip-active'));
     ch.classList.add('chip-active');
     selectedRole = ch.dataset.role;
   }));
 
+  // Role-specific email validation
+  function validateEmailForRole(email, role) {
+    const emailLower = email.toLowerCase();
+    
+    switch(role) {
+      case 'student':
+        // Any email works for students
+        return true;
+      
+      case 'alumni':
+        // Only specific emails work for alumni
+        return emailLower === 'shreya@gmail.com' || emailLower === 'lakshmi@gmail.com';
+      
+      case 'committee':
+        // Only QWIK@gmail.com works for committee
+        return emailLower === 'qwik@gmail.com';
+      
+      case 'faculty':
+        // Only logesh@srmist.edu.in works for faculty
+        return emailLower === 'logesh@srmist.edu.in';
+      
+      default:
+        return false;
+    }
+  }
+
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
-    if (!email) return;
-    state.user = { role: selectedRole, email, level: selectedRole === 'student' ? 3 : 5, follows: [], connections: [] };
+    const password = document.getElementById('password').value.trim();
+    
+    if (!email) {
+      toast('Please enter an email address', 'error');
+      return;
+    }
+    
+    if (!password) {
+      toast('Please enter a password', 'error');
+      return;
+    }
+    
+    // Validate email for the selected role
+    if (!validateEmailForRole(email, selectedRole)) {
+      let errorMessage = '';
+      switch(selectedRole) {
+        case 'alumni':
+          errorMessage = 'Only shreya@gmail.com and lakshmi@gmail.com are allowed for Alumni';
+          break;
+        case 'committee':
+          errorMessage = 'Only QWIK@gmail.com is allowed for Committee';
+          break;
+        case 'faculty':
+          errorMessage = 'Only logesh@srmist.edu.in is allowed for Faculty';
+          break;
+        default:
+          errorMessage = 'Invalid email for this role';
+      }
+      toast(errorMessage, 'error');
+      return;
+    }
+    
+    // Login successful
+    state.user = { 
+      role: selectedRole, 
+      email, 
+      level: selectedRole === 'student' ? 3 : 5, 
+      follows: [], 
+      connections: [],
+      authMethod: 'email'
+    };
     saveState(state);
     renderApp();
+    toast(`Welcome ${email}! Successfully logged in as ${selectedRole}`);
   });
 
   logoutBtn.addEventListener('click', () => {
@@ -85,31 +557,63 @@
   });
 
   function renderApp() {
+    console.log('renderApp called, state.user:', state.user);
     const isAuthed = !!state.user;
+    console.log('isAuthed:', isAuthed);
+    
     viewLogin.classList.toggle('hidden', isAuthed);
     viewApp.classList.toggle('hidden', !isAuthed);
-    if (!isAuthed) return;
+    console.log('Login view hidden:', viewLogin.classList.contains('hidden'));
+    console.log('App view hidden:', viewApp.classList.contains('hidden'));
+    
+    if (!isAuthed) {
+      console.log('Not authenticated, returning early');
+      return;
+    }
+
+    console.log('User authenticated, proceeding with app rendering...');
 
     // Role badge
     userRoleEl.textContent = `${capitalize(state.user.role)} · L${state.user.level}`;
+    
+    // Show user name and picture if available (from Google Sign-In)
+    if (state.user.name && state.user.picture) {
+      const userInfo = document.createElement('div');
+      userInfo.style.cssText = 'display: flex; align-items: center; gap: 8px; margin-right: 12px;';
+      userInfo.innerHTML = `
+        <img src="${state.user.picture}" alt="${state.user.name}" style="width: 24px; height: 24px; border-radius: 50%;">
+        <span style="font-size: 14px; color: #e5e7eb;">${state.user.name}</span>
+      `;
+      userRoleEl.parentNode.insertBefore(userInfo, userRoleEl);
+    }
 
     // Role-based visibility
     document.querySelectorAll('.committee-only').forEach(el => el.classList.toggle('hidden', state.user.role !== 'committee'));
     document.querySelectorAll('.alumni-only').forEach(el => el.classList.toggle('hidden', state.user.role !== 'alumni'));
     document.querySelectorAll('.faculty-only').forEach(el => el.classList.toggle('hidden', state.user.role !== 'faculty'));
     document.querySelectorAll('.student-only').forEach(el => el.classList.toggle('hidden', state.user.role !== 'student'));
+    document.querySelectorAll('.alumni-hidden').forEach(el => el.classList.toggle('hidden', state.user.role === 'alumni'));
+    document.querySelectorAll('.committee-hidden').forEach(el => el.classList.toggle('hidden', state.user.role === 'committee'));
     
     // Add role class to body for CSS targeting
     document.body.className = document.body.className.replace(/role-\w+/g, '');
     document.body.classList.add(`role-${state.user.role}`);
 
-    // Init tabs
-    const initialTab = (location.hash.replace('#', '') || 'directory');
+    // Set initial tab based on role
+    let initialTab = (location.hash.replace('#', '') || 'directory');
+    if (state.user.role === 'faculty') {
+      initialTab = 'monitoring';
+    } else if (state.user.role === 'alumni') {
+      initialTab = 'profiles'; // Alumni don't have directory, so start with profiles
+    } else if (state.user.role === 'committee') {
+      initialTab = 'events'; // Committee starts with events
+    }
     activateTab(initialTab);
     renderDirectory();
     renderProfiles();
     renderMeetings();
     renderCollab();
+    renderLevels();
     renderEvents();
     renderFeed();
     renderMonitoring();
@@ -367,6 +871,10 @@
     document.getElementById('edit-internships').value = currentStudent.internships.join(', ') || '';
     document.getElementById('edit-certifications').value = currentStudent.certifications.join(', ') || '';
     document.getElementById('edit-achievements').value = currentStudent.achievements.join(', ') || '';
+    document.getElementById('edit-skills').value = currentStudent.skills ? currentStudent.skills.join(', ') : '';
+    document.getElementById('edit-interests').value = currentStudent.interests ? currentStudent.interests.join(', ') : '';
+    document.getElementById('edit-linkedin').value = currentStudent.linkedin || '';
+    document.getElementById('edit-github').value = currentStudent.github || '';
   }
 
   function updateStudentProfile() {
@@ -377,6 +885,10 @@
     const internships = document.getElementById('edit-internships').value.split(',').map(i => i.trim()).filter(i => i);
     const certifications = document.getElementById('edit-certifications').value.split(',').map(c => c.trim()).filter(c => c);
     const achievements = document.getElementById('edit-achievements').value.split(',').map(a => a.trim()).filter(a => a);
+    const skills = document.getElementById('edit-skills').value.split(',').map(s => s.trim()).filter(s => s);
+    const interests = document.getElementById('edit-interests').value.split(',').map(i => i.trim()).filter(i => i);
+    const linkedin = document.getElementById('edit-linkedin').value.trim();
+    const github = document.getElementById('edit-github').value.trim();
 
     // Find and update student profile
     const studentIndex = MOCK.students.findIndex(s => s.email === state.user.email);
@@ -390,6 +902,10 @@
         internships: internships.length > 0 ? internships : MOCK.students[studentIndex].internships,
         certifications: certifications.length > 0 ? certifications : MOCK.students[studentIndex].certifications,
         achievements: achievements.length > 0 ? achievements : MOCK.students[studentIndex].achievements,
+        skills: skills.length > 0 ? skills : (MOCK.students[studentIndex].skills || []),
+        interests: interests.length > 0 ? interests : (MOCK.students[studentIndex].interests || []),
+        linkedin: linkedin || MOCK.students[studentIndex].linkedin || '',
+        github: github || MOCK.students[studentIndex].github || '',
       };
     }
 
@@ -1073,6 +1589,46 @@
 
     [monitorBatch, monitorDepartment, monitorSearch].forEach(el => el.addEventListener('input', apply));
     apply();
+  }
+
+  // Levels
+  function renderLevels() {
+    // This function handles the student level system
+    // The HTML already contains the level cards with progress bars
+    // We can add dynamic updates here if needed
+    console.log('Levels section rendered for student');
+  }
+
+  // Student Quick Actions
+  function requestMentorship() {
+    toast('Opening mentorship request form...', 'success');
+    // Could open a modal or redirect to meetings section
+    activateTab('meetings');
+  }
+
+  function findInternships() {
+    toast('Searching for internship opportunities...', 'success');
+    // Could filter alumni by companies offering internships
+    const dirSearch = document.getElementById('dir-search');
+    if (dirSearch) {
+      dirSearch.value = 'internship';
+      dirSearch.dispatchEvent(new Event('input'));
+    }
+  }
+
+  function connectAlumni() {
+    toast('Opening alumni connection tools...', 'success');
+    activateTab('profiles');
+  }
+
+  function exploreCareers() {
+    toast('Exploring career paths...', 'success');
+    // Could show career guidance or filter alumni by career paths
+    const dirSearch = document.getElementById('dir-search');
+    if (dirSearch) {
+      dirSearch.value = 'career';
+      dirSearch.dispatchEvent(new Event('input'));
+    }
   }
 
   // Analytics
